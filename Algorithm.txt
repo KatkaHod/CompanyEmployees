@@ -1,0 +1,49 @@
+Algorithm Description 
+1. Input
+The function main takes a single input object dtoIn with the following properties:
+count (integer): Specifies the number of employees to generate (maximum of 40).
+age (object): Contains:
+min (integer): Minimum age for employees (must be at least 18).
+max (integer): Maximum age for employees (must not exceed 65).
+
+2. Validation
+The input is validated to ensure:
+count is a positive integer between 1 and 40.
+age.min is a number ≥ 18.
+age.max is a number ≤ 65.
+age.min is less than or equal to age.max. If the validation fails, the function throws an error.
+
+3. Predefined Data
+The function contains arrays of:
+Male first names (maleNames).
+Female first names (femaleNames).
+Male surnames (maleSurnames).
+Female surnames (femaleSurnames).
+
+4. Helper Functions
+getRandomFromArray(array): Randomly selects an element from the given array.
+getRandomGenderMaleOrFemale(): Randomly returns either "male" or "female".
+getRandomBirthdate(minAge, maxAge): Generates a random date of birth within the age range specified by minAge and maxAge.
+The function calculates the range of valid birth years and generates a random date within that range.
+getRandomWorkload(): Randomly selects one of the predefined workloads [10, 20, 30, 40].
+
+5. Employee Generation
+An empty array employees is initialized.
+A loop runs count times to generate employees:
+A random gender is chosen using getRandomGenderMaleOrFemale().
+
+Based on the gender:
+A first name is selected from maleNames or femaleNames.
+A surname is selected from maleSurnames or femaleSurnames.
+A random birthdate is generated using getRandomBirthdate(minAge, maxAge).
+A random workload is selected using getRandomWorkload().
+
+The generated employee is added to the employees array as an object with the following properties:
+gender
+name
+surname
+birthdate
+workload
+
+6. Output
+The function returns the employees array, which contains count number of employee objects.
