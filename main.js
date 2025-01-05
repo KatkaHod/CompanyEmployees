@@ -1,24 +1,44 @@
-//General info - This programme generates employee data based on the input
+/**
+ * This programme generates employee data and performs statistical calculations
+ * 
+ * Generates a list of employee objects based on the input data
+ * @param {Object} dtoIn - Input data containing the number of employees and age range
+ * @param {number} dtoIn.count - The number of employees to generate (1-50)
+ * @param {Object} dtoIn.age - Object specifying the minimum and maximum age of employees
+ * @param {number} dtoIn.age.min - Minimum age of employees (>= 18)
+ * @param {number} dtoIn.age.max - Maximum age of employees (<= 65)
+ * @returns {Object[]} Array of employee objects.
+ */
 
 function generateEmployeeData(dtoIn) {
-
- //Array of names and surnames
  const maleNames = ["Jiří", "Jan", "Petr", "Martin", "Tomáš", "Pavel", "Jaroslav", "Miroslav", "Zdeněk", "František", "Vratislav", "Vladimír", "Josef", "Ondřej", "Lukáš", "Radek", "Václav", "Milan", "Roman", "Aleš", "Libor", "Daniel", "Karel", "Vít"];
  const femaleNames = ["Diana", "Petra", "Lucie", "Veronika", "Eliška", "Kateřina", "Hana", "Jana", "Alena", "Ivana", "Anna", "Tereza", "Marie", "Zuzana", "Lenka", "Martina", "Monika", "Simona", "Barbora", "Markéta", "Renata", "Kamila", "Radka", "Dana"];
  const maleSurnames = ["Novák", "Svoboda", "Novotný", "Dvořák", "Černý", "Procházka", "Kučera", "Veselý", "Horák", "Němec", "Pokorný", "Marek", "Pospíšil", "Hájek", "Král", "Jelínek", "Růžička", "Beneš", "Fiala", "Sedláček", "Kolář", "Navrátil", "Čech"];
  const femaleSurnames = ["Malá", "Holubová", "Štěpánková", "Urbanová", "Bláhová", "Vlčková", "Šťastná", "Matoušková", "Říhová", "Vaňková", "Kadlecová", "Poláková", "Musilová", "Křížová", "Krejčíová", "Hrušková", "Tomanová", "Konečná", "Chalupová", "Hájeková"];
    
- //GetRandomFromArray
+  /**
+   * Returns a random item from an array
+   * @param {Array} array - The array to select a random item from
+   * @returns {*} A random item from the array
+   */
  function getRandomFromArray(array) {
     return array[Math.floor(Math.random() * array.length)];
   }  
  
- //Random gender generation
+ /**
+   * Generates a gender ("male" or "female")
+   * @returns {string} The generated gender
+   */
  function getRandomGenderMaleOrFemale() {
     return Math.random() < 0.5 ? "male" : "female";
   }
 
- //Random date of birth generation - YYYY-MM-DDTHH:mm:ss.sssZ
+ /**
+   * Generates a random birthdate within a given age range.
+   * @param {number} minAge - The minimum age.
+   * @param {number} maxAge - The maximum age.
+   * @returns {string} The generated birthdate in ISO format YYYY-MM-DDTHH:mm:ss.sssZ
+   */ 
  function getRandomBirthdate(minAge, maxAge) {
     if (minAge > maxAge) {
         throw new Error("Invalid age range: min age cannot be greater than max age");
@@ -41,7 +61,10 @@ function generateEmployeeData(dtoIn) {
     return birthdate.toISOString();
   }
 
-  //Random workload generation
+   /**
+   * Generates a random workload (10, 20, 30, 40 hours per week).
+   * @returns {number} The generated workload.
+   */
   function getRandomWorkload() {
     const workloads = [10, 20, 30, 40];
     return getRandomFromArray(workloads);
@@ -83,12 +106,20 @@ function generateEmployeeData(dtoIn) {
   Statistical calculations 
 */
 
-//1. Number of employees from the list
+/**
+ * 1. Calculates the total number of employees
+ * @param {Object[]} employees - Array of employee objects
+ * @returns {number} The total number of employees
+ */
 function calculateTotalEmployees(employees) {
   return employees.length;
 }
 
-//2. Number of employees by workload (10, 20, 30 and 40h/week)
+/**
+ * 2. Calculates the number of employees by workload (10, 20, 30 and 40h/week)
+ * @param {Object[]} employees - Array of employee objects
+ * @returns {Object} An object with workload categories and their respective counts
+ */
 function calculateEmployeesByWorkload(employees) {
   const workloads = { 10: 0, 20: 0, 30: 0, 40: 0 };
   for (const employee of employees) {
@@ -97,7 +128,11 @@ function calculateEmployeesByWorkload(employees) {
   return workloads;
 }
 
-//3. Average age of employees
+/**
+ * 3. Calculates the average age of employees
+ * @param {Object[]} employees - Array of employee objects
+ * @returns {number} The average age of employees
+ */
 function calculateAverageAge(employees) {
   const today = new Date();
   let totalAge = 0;
@@ -108,7 +143,12 @@ function calculateAverageAge(employees) {
   }
   return +(totalAge / employees.length).toFixed(1);
 }
-//4. Age of the youngest employee
+
+/**
+ * 4. Finds the minimum - youngest age of employees.
+ * @param {Object[]} employees - Array of employee objects.
+ * @returns {number} The minimum age of employees.
+ */
 function calculateMinimumAge(employees) {
   const today = new Date();
   let minAge = Infinity;
@@ -122,7 +162,12 @@ function calculateMinimumAge(employees) {
   return minAge;
 }
 
-//5. Age of the oldest employee
+
+/**
+ * 5. Finds the maximum - oldest age of employees.
+ * @param {Object[]} employees - Array of employee objects.
+ * @returns {number} The maximum age of employees.
+ */
 function calculateMaximumAge(employees) {
   const today = new Date();
   let maxAge = -Infinity;
@@ -136,7 +181,11 @@ function calculateMaximumAge(employees) {
   return maxAge;
 }
 
-//6. Median age of the employees
+/**
+ * 6. Calculates the median age of employees
+ * @param {Object[]} employees - Array of employee objects
+ * @returns {number} The median age of employees
+ */
 function calculateMedianAge(employees) {
   const today = new Date();
   const ages = [];
@@ -161,7 +210,11 @@ function calculateMedianAge(employees) {
   }
 }
 
-//7. Median workload
+/**
+ * 7. Calculates the median workload of employees
+ * @param {Object[]} employees - Array of employee objects
+ * @returns {number} The median workload of employees
+ */
 function calculateMedianWorkload(employees) {
   const workloads = employees.map(employee => employee.workload);
 
@@ -175,7 +228,11 @@ function calculateMedianWorkload(employees) {
   }
 }
 
-//8. Average workload of female employees
+/**
+ * 8. Calculates the average workload of female employees
+ * @param {Object[]} employees - Array of employee objects
+ * @returns {number} The average workload of female employees
+ */
 function calculateAvgWorkloadWomen(employees) {
   let totalWorkload = 0;
   let count = 0;
@@ -188,15 +245,22 @@ function calculateAvgWorkloadWomen(employees) {
   return count > 0 ? +(totalWorkload / count).toFixed(1) : 0;
 }
 
-//9. Employees sorted by workloads
+
+/**
+ * 9. Returns employees sorted by workload in ascending order.
+ * @param {Object[]} employees - Array of employee objects.
+ * @returns {Object[]} The employees sorted by workload.
+ */
 function getEmployeesSortedByWorkload(employees) {
   return [...employees].sort((a, b) => a.workload - b.workload); 
 }
 
 
-/*
-  Employee statistics - returns an object containing various calculated statistics
-*/
+/**
+ * Employee statistics - returns an object containing various calculated statistics
+ * @param {Object[]} employees - Array of employee objects
+ * @returns {Object} An object containing statistics
+ */
 function getEmployeeStatistics(employees) {
   return {
     totalEmployees: calculateTotalEmployees(employees),
@@ -211,7 +275,26 @@ function getEmployeeStatistics(employees) {
   };
 }
 
-//MAIN FUNCTION
+/**
+ * Processes employee data and calculates statistics
+ *
+ * @function main
+ * @param {Object} dtoIn - Input data transfer object containing parameters for generating employee data
+ * @param {Array<Object>} dtoIn.employees - Array of employee input parameters
+ * @returns {Object} An object containing calculated employee statistics
+ * @property {number} total - Total number of employees
+ * @property {number} workload10 - Number of employees with a workload of 10 hours per week
+ * @property {number} workload20 - Number of employees with a workload of 20 hours per week
+ * @property {number} workload30 - Number of employees with a workload of 30 hours per week
+ * @property {number} workload40 - Number of employees with a workload of 40 hours per week
+ * @property {number} averageAge - Average age of employees
+ * @property {number} minAge - Minimum age of employees
+ * @property {number} maxAge - Maximum age of employees
+ * @property {number} medianAge - Median age of employees
+ * @property {number} medianWorkload - Median workload of employees
+ * @property {number} averageWomenWorkload - Average workload for female employees
+ * @property {Array<Object>} sortedByWorkload - Array of employees sorted by workload
+ */
 
 function main(dtoIn) {
   const employees = generateEmployeeData(dtoIn); //Array of employee objects generated based on input parameters
