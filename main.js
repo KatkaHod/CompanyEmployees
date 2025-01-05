@@ -28,12 +28,17 @@ function main(dtoIn) {
     const startYear = today.getFullYear() - maxAge;
     const endYear = today.getFullYear() - minAge;
 
+    // Random year between startYear a endYear
     const randomYear = Math.floor(Math.random() * (endYear - startYear + 1)) + startYear;
-    const randomMonth = Math.floor(Math.random() * 12);
-    const daysInMonth = new Date(randomYear, randomMonth + 1, 0).getDate(); //Last day of the month
-    const randomDay = Math.floor(Math.random() * daysInMonth) + 1;
 
-    return new Date(Date.UTC(randomYear, randomMonth, randomDay)).toISOString();
+    const birthdate = new Date(Date.UTC(randomYear, 0, 1, 0, 0, 0, 0));
+
+    const age = today.getFullYear() - birthdate.getUTCFullYear();
+    if (age < minAge || age > maxAge) {
+        throw new Error(`Generated birthdate does not match age limits: ${birthdate.toISOString()}`);
+    }
+
+    return birthdate.toISOString();
   }
 
   //Random workload generation
@@ -45,11 +50,11 @@ function main(dtoIn) {
   //Check input data
   if (
     !dtoIn || 
-    typeof dtoIn.count !== "number" || dtoIn.count <= 0 || dtoIn.count > 40 || 
+    typeof dtoIn.count !== "number" || dtoIn.count <= 0 || dtoIn.count > 50 || 
     typeof dtoIn.age?.min !== "number" || dtoIn.age.min < 18 || 
     typeof dtoIn.age?.max !== "number" || dtoIn.age.max > 65
   ) {
-    throw new Error("Invalid input: count must be a positive number ≤ 40, and age must be between 18 and 65");
+    throw new Error("Invalid input: count must be a positive number <= 50, and age must be between 18 and 65");
   }
 
   //Generate employees list
