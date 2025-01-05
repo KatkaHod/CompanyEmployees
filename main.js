@@ -296,7 +296,7 @@ function getEmployeeStatistics(employees) {
  * @property {Array<Object>} sortedByWorkload - Array of employees sorted by workload
  */
 
-function main(dtoIn) {
+ export function main(dtoIn) {
   const employees = generateEmployeeData(dtoIn); //Array of employee objects generated based on input parameters
   const statistics = getEmployeeStatistics(employees); //Object containing calculated statistics based on the employee list
   return {
