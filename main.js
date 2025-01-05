@@ -10,7 +10,7 @@
  * @returns {Object[]} Array of employee objects.
  */
 
-function generateEmployeeData(dtoIn) {
+ export function generateEmployeeData(dtoIn) {
  const maleNames = ["Jiří", "Jan", "Petr", "Martin", "Tomáš", "Pavel", "Jaroslav", "Miroslav", "Zdeněk", "František", "Vratislav", "Vladimír", "Josef", "Ondřej", "Lukáš", "Radek", "Václav", "Milan", "Roman", "Aleš", "Libor", "Daniel", "Karel", "Vít"];
  const femaleNames = ["Diana", "Petra", "Lucie", "Veronika", "Eliška", "Kateřina", "Hana", "Jana", "Alena", "Ivana", "Anna", "Tereza", "Marie", "Zuzana", "Lenka", "Martina", "Monika", "Simona", "Barbora", "Markéta", "Renata", "Kamila", "Radka", "Dana"];
  const maleSurnames = ["Novák", "Svoboda", "Novotný", "Dvořák", "Černý", "Procházka", "Kučera", "Veselý", "Horák", "Němec", "Pokorný", "Marek", "Pospíšil", "Hájek", "Král", "Jelínek", "Růžička", "Beneš", "Fiala", "Sedláček", "Kolář", "Navrátil", "Čech"];
@@ -21,7 +21,7 @@ function generateEmployeeData(dtoIn) {
    * @param {Array} array - The array to select a random item from
    * @returns {*} A random item from the array
    */
- function getRandomFromArray(array) {
+   function getRandomFromArray(array) {
     return array[Math.floor(Math.random() * array.length)];
   }  
  
@@ -111,7 +111,7 @@ function generateEmployeeData(dtoIn) {
  * @param {Object[]} employees - Array of employee objects
  * @returns {number} The total number of employees
  */
-function calculateTotalEmployees(employees) {
+ export function calculateTotalEmployees(employees) {
   return employees.length;
 }
 
@@ -120,7 +120,7 @@ function calculateTotalEmployees(employees) {
  * @param {Object[]} employees - Array of employee objects
  * @returns {Object} An object with workload categories and their respective counts
  */
-function calculateEmployeesByWorkload(employees) {
+ export function calculateEmployeesByWorkload(employees) {
   const workloads = { 10: 0, 20: 0, 30: 0, 40: 0 };
   for (const employee of employees) {
     workloads[employee.workload]++;
@@ -133,7 +133,7 @@ function calculateEmployeesByWorkload(employees) {
  * @param {Object[]} employees - Array of employee objects
  * @returns {number} The average age of employees
  */
-function calculateAverageAge(employees) {
+ export function calculateAverageAge(employees) {
   const today = new Date();
   let totalAge = 0;
   for (const employee of employees) {
@@ -149,7 +149,7 @@ function calculateAverageAge(employees) {
  * @param {Object[]} employees - Array of employee objects.
  * @returns {number} The minimum age of employees.
  */
-function calculateMinimumAge(employees) {
+export function calculateMinimumAge(employees) {
   const today = new Date();
   let minAge = Infinity;
   for (const employee of employees) {
@@ -168,7 +168,7 @@ function calculateMinimumAge(employees) {
  * @param {Object[]} employees - Array of employee objects.
  * @returns {number} The maximum age of employees.
  */
-function calculateMaximumAge(employees) {
+ export function calculateMaximumAge(employees) {
   const today = new Date();
   let maxAge = -Infinity;
   for (const employee of employees) {
@@ -186,7 +186,7 @@ function calculateMaximumAge(employees) {
  * @param {Object[]} employees - Array of employee objects
  * @returns {number} The median age of employees
  */
-function calculateMedianAge(employees) {
+ export function calculateMedianAge(employees) {
   const today = new Date();
   const ages = [];
 
@@ -215,7 +215,7 @@ function calculateMedianAge(employees) {
  * @param {Object[]} employees - Array of employee objects
  * @returns {number} The median workload of employees
  */
-function calculateMedianWorkload(employees) {
+ export function calculateMedianWorkload(employees) {
   const workloads = employees.map(employee => employee.workload);
 
   workloads.sort((a, b) => a - b); //sorted in ascending order to find the median
@@ -233,7 +233,7 @@ function calculateMedianWorkload(employees) {
  * @param {Object[]} employees - Array of employee objects
  * @returns {number} The average workload of female employees
  */
-function calculateAvgWorkloadWomen(employees) {
+ export function calculateAvgWorkloadWomen(employees) {
   let totalWorkload = 0;
   let count = 0;
   for (const employee of employees) {
@@ -251,7 +251,7 @@ function calculateAvgWorkloadWomen(employees) {
  * @param {Object[]} employees - Array of employee objects.
  * @returns {Object[]} The employees sorted by workload.
  */
-function getEmployeesSortedByWorkload(employees) {
+ export function getEmployeesSortedByWorkload(employees) {
   return [...employees].sort((a, b) => a.workload - b.workload); 
 }
 
@@ -261,7 +261,7 @@ function getEmployeesSortedByWorkload(employees) {
  * @param {Object[]} employees - Array of employee objects
  * @returns {Object} An object containing statistics
  */
-function getEmployeeStatistics(employees) {
+ export function getEmployeeStatistics(employees) {
   return {
     totalEmployees: calculateTotalEmployees(employees),
     employeesByWorkload: calculateEmployeesByWorkload(employees),
