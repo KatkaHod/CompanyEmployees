@@ -273,8 +273,160 @@ export function calculateMinimumAge(employees) {
   };
 }
 
+/*
+  Statistical calculation based on the most common first names within: 
+  * all employees
+  * women
+  * men
+  * women part-time (10, 20 or 30 hours/per week)
+  * full-time men (40h/week)
+*/
+
+/** 1. The most common first name among the all employees.
+ * @param {Object[]} employees - Array of employee objects.
+ * @returns {Object} An object containing the most common names and their frequencies.
+ */
+
+ export function generalCommonName(employees) {
+  const nameCounts = employees.reduce((counts, employee) => {
+    const name = employee.name;
+    counts[name] = (counts[name] || 0) + 1;
+    return counts;
+  }, {});
+
+  const maxCount = Math.max(...Object.values(nameCounts));
+
+  //Find all names with the maximum count
+  const mostCommonName = Object.keys(nameCounts).filter(
+    (name) => nameCounts[name] === maxCount
+  );
+
+  return { mostCommonName, frequency: maxCount, };
+}
+
 /**
- * Processes employee data and calculates statistics
+ * Finds the most common first name among female employees.
+ * @param {Object[]} employees - Array of employee objects.
+ * @returns {Object} An object with the most common names and their frequency.
+ */
+export function femaleCommonName(employees) {
+  const femaleEmployees = employees.filter((employee) => employee.gender === "female");
+
+  const nameCounts = femaleEmployees.reduce((counts, employee) => {
+    const name = employee.name;
+    counts[name] = (counts[name] || 0) + 1;
+    return counts;
+  }, {});
+
+  const maxCount = Math.max(...Object.values(nameCounts));
+
+  const mostCommonName = Object.keys(nameCounts).filter(
+    (name) => nameCounts[name] === maxCount
+  );
+
+  return { mostCommonName, frequency: maxCount,};
+}
+
+/**
+ * Finds the most common first name among male employees.
+ * @param {Object[]} employees - Array of employee objects.
+ * @returns {Object} An object with the most common names and their frequency.
+ */
+export function maleCommonName(employees) {
+  const maleEmployees = employees.filter((employee) => employee.gender === "male");
+
+  const nameCounts = maleEmployees.reduce((counts, employee) => {
+    const name = employee.name;
+    counts[name] = (counts[name] || 0) + 1;
+    return counts;
+  }, {});
+
+  const maxCount = Math.max(...Object.values(nameCounts));
+
+  const mostCommonName = Object.keys(nameCounts).filter(
+    (name) => nameCounts[name] === maxCount
+  );
+
+  return { mostCommonName, frequency: maxCount,};
+}
+
+/**
+ * Finds the most common first name among female employees part-time working
+ * @param {Object[]} employees - Array of employee objects.
+ * @returns {Object} An object with the most common names and their frequency.
+ */
+export function femaleCommonNamePartTime(employees) {
+  //workload 10, 20, 30 hours per week
+  const filteredEmployees = employees.filter(
+    (employee) =>
+      employee.gender === "female" &&
+      [10, 20, 30].includes(employee.workload)
+  );
+
+  const nameCounts = filteredEmployees.reduce((counts, employee) => {
+    const name = employee.name;
+    counts[name] = (counts[name] || 0) + 1; 
+    return counts;
+  }, {});
+
+  const maxCount = Math.max(...Object.values(nameCounts));
+
+  const mostCommonNames = Object.keys(nameCounts).filter(
+    (name) => nameCounts[name] === maxCount
+  );
+
+  return {mostCommonNames, frequency: maxCount,
+  };
+}
+
+/**
+ * Find the most common first name among full-time male employees
+ * @param {Object[]} employees - Array of employee objects.
+ * @returns {Object} An object with the most common names and their frequency.
+ */
+export function maleCommonNameFulltime(employees) {
+  //workload 40 hours per week
+  const filteredEmployees = employees.filter(
+    (employee) =>
+      employee.gender === "male" &&
+      [40].includes(employee.workload)
+  );
+
+  const nameCounts = filteredEmployees.reduce((counts, employee) => {
+    const name = employee.name;
+    counts[name] = (counts[name] || 0) + 1; 
+    return counts;
+  }, {});
+
+  const maxCount = Math.max(...Object.values(nameCounts));
+
+  const mostCommonNames = Object.keys(nameCounts).filter(
+    (name) => nameCounts[name] === maxCount
+  );
+
+  return {mostCommonNames, frequency: maxCount,
+  };
+}
+
+
+/**
+ * Common names - returns an object containing various calculated common names
+ * @param {Object[]} employees - Array of employee objects
+ * @returns {Object} An object containing common names
+ */
+
+export function getEmployeeChartContent(employees) {
+  return {
+    CommonNameAllEmployees: generalCommonName(employees),
+    CommonNameFemale: femaleCommonName(employees),
+    CommonNameMale: maleCommonName(employees),
+    CommonNameFemaleByPartTimeWork: femaleCommonNamePartTime(employees),
+    CommonNameMaleByFullTimeWork: maleCommonNameFulltime(employees),
+  };
+}
+
+/**
+ * Processes employee data and calculates employee chart content and statistics 
  *
  * @function main
  * @param {Object} dtoIn - Input data transfer object containing parameters for generating employee data
@@ -296,9 +448,17 @@ export function calculateMinimumAge(employees) {
 
  export function main(dtoIn) {
   const employees = generateEmployeeData(dtoIn); //Array of employee objects generated based on input parameters
+  const employeeChartContent = getEmployeeChartContent(employees);
   const statistics = getEmployeeStatistics(employees); //Object containing calculated statistics based on the employee list
+
   return {
-    total: statistics.totalEmployees,
+    theMostCommonNameOfallEmployees: employeeChartContent.CommonNameAllEmployees,
+    theMostCommonNameOfFemales: employeeChartContent.CommonNameFemale,
+    theMostCommonNameOfMales: employeeChartContent.CommonNameMale,
+    TheMostCommonNameOfFemalesByPartTimeWork: employeeChartContent.CommonNameFemaleByPartTimeWork,
+    TheMostCommonNameOfMalesByFullTimeWork: employeeChartContent.CommonNameMaleByFullTimeWork,
+
+    totalEmployees: statistics.totalEmployees,
     workload10: statistics.employeesByWorkload[10],
     workload20: statistics.employeesByWorkload[20],
     workload30: statistics.employeesByWorkload[30],
@@ -310,13 +470,14 @@ export function calculateMinimumAge(employees) {
     medianWorkload: statistics.medianWorkload,
     averageWomenWorkload: statistics.averageWomenWorkload,
     sortedByWorkload: statistics.sortedByWorkload,
+    
   };
 }
 
 //Input
 const dtoIn = {
     count: 50,
-    age: { min: 19, max: 35,},
+    age: { min: 18, max: 65,},
   };
 
 //Output
