@@ -136,10 +136,18 @@
  export function calculateAverageAge(employees) {
   const today = new Date();
   let totalAge = 0;
+
   for (const employee of employees) {
     const birthdate = new Date(employee.birthdate);
     const age = today.getFullYear() - birthdate.getFullYear();
-    totalAge = totalAge + age; //totalAge += age;
+
+    const hasHadBirthdayThisYear = today.getMonth() > birthdate.getMonth() || (today.getMonth() === birthdate.getMonth() && today.getDate() >= birthdate.getDate());
+    if (!hasHadBirthdayThisYear) {
+      age -= 1;
+    }
+
+    totalAge = totalAge + age;
+
   }
   return +(totalAge / employees.length).toFixed(1);
 }
