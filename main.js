@@ -70,16 +70,6 @@
     return getRandomFromArray(workloads);
   }
 
-  //Check input data
-  if (
-    !dtoIn || 
-    typeof dtoIn.count !== "number" || dtoIn.count <= 0 || dtoIn.count > 50 || 
-    typeof dtoIn.age?.min !== "number" || dtoIn.age.min < 18 || 
-    typeof dtoIn.age?.max !== "number" || dtoIn.age.max > 65
-  ) {
-    throw new Error("Invalid input: count must be a positive number <= 50, and age must be between 18 and 65");
-  }
-
   //Generate employees list
   const employees = [];
   for (let i = 0; i < dtoIn.count; i++) {
